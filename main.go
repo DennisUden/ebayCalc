@@ -6,7 +6,7 @@ import (
 	"bufio"
 	"strconv"
 	"strings"
-//	"github.com/DennisUden/GoLib"
+	"github.com/DennisUden/GoLib"
 )
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
@@ -27,19 +27,47 @@ func toFloat(a string) float64 {
 }
 
 func main() {
-	ek := newInput("Einkaufspreis")
-	ekFloat := toFloat(ek)
-	fmt.Println(ekFloat*2)
+	// In eine Schleife packen
+	ekString := newInput("Einkaufspreis")
+	ek := toFloat(ekString)
 
-	marge := newInput("Frachtmarge")
-	margeFloat := toFloat(marge)
-	fmt.Println(margeFloat*2)
+	frachtMargeString := newInput("Frachtmarge")
+	frachtMarge := toFloat(frachtMargeString)
 
 	kat := newInput("Kategorie")
 	fmt.Println(kat)
 
-	vk := newInput("Verkaufspreis")
-	vkFloat := toFloat(vk)
-	fmt.Println(vkFloat*2)
+	mengeString := newInput("Menge")
+	menge := toFloat(mengeString)
+
+	vkEbayString := newInput("Verkaufspreis")
+	vkEbay := toFloat(vkEbayString)
+
+	uSt := 0.19
+	versand := 5.50
+	// Kategorien berücksichtigen
+	provision := min(99, (vkEbay * 12/100) + 0.35)
+//	netEbay := vkEbay / (1 + uSt)
+//	rawEbay := netEbay - versand - provision
+//	fmt.Println(rawEbay)
+
+	vkShop := vkEbay - provision - versand
+	netShop := vkShop / (1 + uSt)
+
+	einstand := ek + (ek * frachtMarge/100)
+
+//	discount := [5]float64{0, 5, 10, 15, 20}
+//	fmt.Println(discount)
+
+	gewinn := netShop - einstand
+
+	marge := gewinn * 100 / netShop
+	fmt.Println(marge)
+
+	// Muss aufrunden
+	breakeven := GoLib.Round((einstand * menge) / gewinn, 0)
+	fmt.Println(breakeven)
+
+	
 
 }
