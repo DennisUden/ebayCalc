@@ -11,24 +11,35 @@ import (
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
-func newInput(q string) string {
-	fmt.Printf("%v: ", q)
-	a, _ := reader.ReadString('\n')
-	return a
+func newInput(question string) string {
+	fmt.Printf("%v: ", question)
+	answer, _ := reader.ReadString('\n')
+	answer = strings.TrimSpace(answer)
+	return answer
+}
+
+func toFloat(a string) float64 {
+	aFloat, err := strconv.ParseFloat(a, 64)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return aFloat
 }
 
 func main() {
 	ek := newInput("Einkaufspreis")
-	
-	ekNoSpace := strings.TrimSpace(ek)
+	ekFloat := toFloat(ek)
+	fmt.Println(ekFloat*2)
 
-	ekFloat, err := strconv.ParseFloat(ekNoSpace , 64)
-	if err != nil {
-		fmt.Println(err)
-	}
+	marge := newInput("Frachtmarge")
+	margeFloat := toFloat(marge)
+	fmt.Println(margeFloat*2)
 
-	x := 2.0
+	kat := newInput("Kategorie")
+	fmt.Println(kat)
 
-	fmt.Println(x*ekFloat)
+	vk := newInput("Verkaufspreis")
+	vkFloat := toFloat(vk)
+	fmt.Println(vkFloat*2)
 
 }
