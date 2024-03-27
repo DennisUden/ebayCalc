@@ -2,12 +2,33 @@ package main
 
 import (
 	"fmt"
-	"github.com/DennisUden/GoLib"
+	"os"
+	"bufio"
+	"strconv"
+	"strings"
+//	"github.com/DennisUden/GoLib"
 )
 
+var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
+func newInput(q string) string {
+	fmt.Printf("%v: ", q)
+	a, _ := reader.ReadString('\n')
+	return a
+}
 
 func main() {
-	var toRound float64 = 2.5772342341235646
-	fmt.Println(GoLib.Round(toRound, 3))
+	ek := newInput("Einkaufspreis")
+	
+	ekNoSpace := strings.TrimSpace(ek)
+
+	ekFloat, err := strconv.ParseFloat(ekNoSpace , 64)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	x := 2.0
+
+	fmt.Println(x*ekFloat)
+
 }
