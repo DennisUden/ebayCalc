@@ -40,7 +40,7 @@ func main() {
 	mengeString := newInput("Menge")
 	menge := toFloat(mengeString)
 
-	vkEbayString := newInput("Verkaufspreis")
+	vkEbayString := newInput("Ebay Preis")
 	vkEbay := toFloat(vkEbayString)
 
 	uSt := 0.19
@@ -51,23 +51,28 @@ func main() {
 //	rawEbay := netEbay - versand - provision
 //	fmt.Println(rawEbay)
 
-	vkShop := vkEbay - provision - versand
-	netShop := vkShop / (1 + uSt)
+	vkShopCalc := vkEbay - provision - versand
+	vkShop := GoLib.Round(vkShopCalc, 2)
+
+	netShop := vkShopCalc / (1 + uSt)
 
 	einstand := ek + (ek * frachtMarge/100)
 
-//	discount := [5]float64{0, 5, 10, 15, 20}
-//	fmt.Println(discount)
+	discount := [5]float64{0, 5, 10, 15, 20}
 
-	gewinn := netShop - einstand
+	gewinnCalc := netShop - einstand
+	gewinn := GoLib.Round(gewinnCalc, 2)
 
-	marge := gewinn * 100 / netShop
-	fmt.Println(marge)
+	margeCalc := gewinnCalc * 100 / netShop
+	marge := GoLib.Round(margeCalc, 2)
 
 	// Muss aufrunden
-	breakeven := GoLib.Round((einstand * menge) / gewinn, 0)
-	fmt.Println(breakeven)
+	breakeven := GoLib.RoundUp((einstand * menge) / gewinnCalc)
 
-	
+	fmt.Println("Shop Preis:", vkShop)
 
+	fmt.Println("-----------------------------------------")
+	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
+	fmt.Println("-----------------------------------------")
+	fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[0], gewinn, marge, breakeven)
 }
