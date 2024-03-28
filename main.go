@@ -31,6 +31,8 @@ func main() {
 	var frachtMarge float64
 	var menge float64
 	var vkEbay float64
+	var kat string
+	var provision float64
 
 	stopLoop := false
 	// In eine Schleife packen
@@ -42,8 +44,7 @@ func main() {
 		frachtMargeString := newInput("Frachtmarge")
 		frachtMarge = toFloat(frachtMargeString)
 	
-		kat := newInput("Kategorie")
-		fmt.Println(kat)
+		kat = newInput("Kategorie")
 	
 		mengeString := newInput("Menge")
 		menge = toFloat(mengeString)
@@ -55,9 +56,18 @@ func main() {
 	}
 
 	uSt := 0.19
+
 	versand := 5.50
-	// Kategorien berücksichtigen
-	provision := min(99, (vkEbay * 12/100) + 0.35)
+
+	provisionBoote := min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+	provisionGarten := min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+
+	switch kat {
+		case "b": provision = provisionBoote
+		case "g": provision = provisionGarten
+	}
+	fmt.Println(provision)
+	
 	netEbay := vkEbay / (1 + uSt)
 	rawEbay := netEbay - versand - provision
 
@@ -66,8 +76,6 @@ func main() {
 
 	vkShopCalc := (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
 	vkShop := GoLib.Round(vkShopCalc, 2)
-
-//	netShop := vkShopCalc / (1 + uSt)
 
 	einstand := ek + (ek * frachtMarge/100)
 
@@ -90,4 +98,5 @@ func main() {
 
 		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, marge, breakeven)
 	}
+	fmt.Println("-----------------------------------------")
 }
