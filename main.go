@@ -103,4 +103,35 @@ func main() {
 	discount := [5]float64{0, 5, 10, 15, 20}
 
 	writeOutput(vkShop, discount, rawEbay, einstand, menge)
+
+	for i := 0; i >= 0; i++ {
+		vkEbayString = newInput("Ebay Preis")
+		if vkEbayString == "ek" {
+			ekString = newInput("Einkaufspreis")
+			ek = toFloat(ekString)
+
+			vkEbayString = newInput("Ebay Preis")
+			vkEbay = toFloat(vkEbayString)
+
+			netEbay = vkEbay / (1 + uSt)
+			rawEbay = netEbay - versand - provision
+		
+			vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+			vkShop = GoLib.Round(vkShopCalc, 2)
+		
+			einstand = ek + (ek * frachtMarge/100)
+
+			writeOutput(vkShop, discount, rawEbay, einstand, menge)
+		}
+		vkEbay = toFloat(vkEbayString)
+		netEbay = vkEbay / (1 + uSt)
+		rawEbay = netEbay - versand - provision
+		
+		vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+		vkShop = GoLib.Round(vkShopCalc, 2)
+
+		einstand = ek + (ek * frachtMarge/100)
+
+		writeOutput(vkShop, discount, rawEbay, einstand, menge)
+	}
 }
