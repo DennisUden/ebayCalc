@@ -122,6 +122,7 @@ func main() {
 			einstand = ek + (ek * frachtMarge/100)
 
 			writeOutput(vkShop, discount, rawEbay, einstand, menge)
+			continue
 		}
 		vkEbay = toFloat(vkEbayString)
 		netEbay = vkEbay / (1 + uSt)
