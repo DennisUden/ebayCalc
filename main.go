@@ -11,6 +11,42 @@ import (
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
+var ekString string 
+var ek float64
+
+var frachtMargeString string
+var frachtMarge float64
+
+var mengeString string 
+var menge float64
+
+var kat string
+	
+var vkEbayString string
+var vkEbay float64
+
+var provision float64
+	
+var uSt float64 = 0.19
+
+var versand float64 = 5.50
+
+var provisionBoote float64
+var provisionGarten float64
+	
+var netEbay float64
+var rawEbay float64
+
+var paypalFix float64 = 0.35
+var paypalVar float64 = 0.0299
+
+var vkShopCalc float64
+var vkShop float64
+
+var einstand float64
+
+var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
+
 func newInput(question string) string {
 	fmt.Printf("%v: ", question)
 	answer, _ := reader.ReadString('\n')
@@ -26,13 +62,7 @@ func toFloat(a string) float64 {
 	return aFloat
 }
 
-func writeOutput(
-	vkShop float64, 
-	discount [5]float64, 
-	rawEbay float64, 
-	einstand float64, 
-	menge float64) {
-
+func writeOutput() {
 	// farben hinzufügen
 	fmt.Println("Shop Preis:", vkShop)
 	
@@ -50,59 +80,42 @@ func writeOutput(
 		breakeven := GoLib.RoundUp((einstand * menge) / gewinnCalc)
 
 		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, marge, breakeven)
-
 	}
 	fmt.Println("-----------------------------------------")
 }
 
 func main() {
-	var ek float64
-	var frachtMarge float64
-	var menge float64
-	var vkEbay float64
-	var kat string
-	var provision float64
-
-	ekString := newInput("Einkaufspreis")
+	ekString = newInput("Einkaufspreis")
 	ek = toFloat(ekString)
 
-	frachtMargeString := newInput("Frachtmarge")
+	frachtMargeString = newInput("Frachtmarge")
 	frachtMarge = toFloat(frachtMargeString)
+
+	mengeString = newInput("Menge")
+	menge = toFloat(mengeString)
 
 	kat = newInput("Kategorie")
 
-	mengeString := newInput("Menge")
-	menge = toFloat(mengeString)
-
-	vkEbayString := newInput("Ebay Preis")
+	vkEbayString = newInput("Ebay Preis")
 	vkEbay = toFloat(vkEbayString)
+
+	provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+	provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
 	
-	uSt := 0.19
-
-	versand := 5.50
-
-	provisionBoote := min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
-	provisionGarten := min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
-
 	switch kat {
 		case "b": provision = provisionBoote
 		case "g": provision = provisionGarten
 	}
-	
-	netEbay := vkEbay / (1 + uSt)
-	rawEbay := netEbay - versand - provision
 
-	paypalFix := 0.35
-	paypalVar := 0.0299
+	netEbay = vkEbay / (1 + uSt)
+	rawEbay = netEbay - versand - provision
 
-	vkShopCalc := (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
-	vkShop := GoLib.Round(vkShopCalc, 2)
+	vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+	vkShop = GoLib.Round(vkShopCalc, 2)
 
-	einstand := ek + (ek * frachtMarge/100)
+	einstand = ek + (ek * frachtMarge/100)
 
-	discount := [5]float64{0, 5, 10, 15, 20}
-
-	writeOutput(vkShop, discount, rawEbay, einstand, menge)
+	writeOutput()
 
 	for i := 0; i >= 0; i++ {
 		vkEbayString = newInput("Ebay Preis")
@@ -121,7 +134,7 @@ func main() {
 		
 			einstand = ek + (ek * frachtMarge/100)
 
-			writeOutput(vkShop, discount, rawEbay, einstand, menge)
+			writeOutput()
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
@@ -133,6 +146,6 @@ func main() {
 
 		einstand = ek + (ek * frachtMarge/100)
 
-		writeOutput(vkShop, discount, rawEbay, einstand, menge)
+		writeOutput()
 	}
 }
