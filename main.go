@@ -123,6 +123,9 @@ func main() {
 			ekString = newInput("Einkaufspreis")
 			ek = toFloat(ekString)
 
+			mengeString = newInput("Menge")
+			menge = toFloat(mengeString)
+
 			vkEbayString = newInput("Ebay Preis")
 			vkEbay = toFloat(vkEbayString)
 
