@@ -75,6 +75,24 @@ func toFloat(a string) float64 {
 	return aFloat
 }
 
+func calcOutput() {
+	provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+	provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+	
+	switch kat {
+		case "b": provision = provisionBoote
+		case "g": provision = provisionGarten
+	}
+
+	netEbay = vkEbay / (1 + uSt)
+	rawEbay = netEbay - versand - provision
+
+	vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+	vkShop = GoLib.Round(vkShopCalc, 2)
+
+	einstand = ek + (ek * frachtMarge/100)
+}
+
 func writeOutput() {
 	// farben hinzufügen
 	fmt.Println("Shop Preis:", vkShop)
@@ -115,22 +133,7 @@ func main() {
 	vkEbayString = newInput("Ebay Preis")
 	vkEbay = toFloat(vkEbayString)
 
-	provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
-	provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
-	
-	switch kat {
-		case "b": provision = provisionBoote
-		case "g": provision = provisionGarten
-	}
-	fmt.Println(provision)
-
-	netEbay = vkEbay / (1 + uSt)
-	rawEbay = netEbay - versand - provision
-
-	vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
-	vkShop = GoLib.Round(vkShopCalc, 2)
-
-	einstand = ek + (ek * frachtMarge/100)
+	calcOutput()
 
 	writeOutput()
 
@@ -147,43 +150,15 @@ func main() {
 			vkEbayString = newInput("Ebay Preis")
 			vkEbay = toFloat(vkEbayString)
 
-			provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
-			provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
-			switch kat {
-			case "b": provision = provisionBoote
-			case "g": provision = provisionGarten
-			}
-
-			netEbay = vkEbay / (1 + uSt)
-			rawEbay = netEbay - versand - provision
-		
-			vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
-			vkShop = GoLib.Round(vkShopCalc, 2)
-		
-			einstand = ek + (ek * frachtMarge/100)
-			fmt.Println(provision)
+			calcOutput()
 
 			writeOutput()
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
 
-		provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
-		provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
-		switch kat {
-		case "b": provision = provisionBoote
-		case "g": provision = provisionGarten
-		}
+		calcOutput()
 
-		netEbay = vkEbay / (1 + uSt)
-		rawEbay = netEbay - versand - provision
-		
-		vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
-		vkShop = GoLib.Round(vkShopCalc, 2)
-
-		einstand = ek + (ek * frachtMarge/100)
-
-	fmt.Println(provision)
 		writeOutput()
 	}
 }
