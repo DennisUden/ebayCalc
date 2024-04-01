@@ -122,6 +122,7 @@ func main() {
 		case "b": provision = provisionBoote
 		case "g": provision = provisionGarten
 	}
+	fmt.Println(provision)
 
 	netEbay = vkEbay / (1 + uSt)
 	rawEbay = netEbay - versand - provision
@@ -148,6 +149,10 @@ func main() {
 
 			provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
 			provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+			switch kat {
+			case "b": provision = provisionBoote
+			case "g": provision = provisionGarten
+			}
 
 			netEbay = vkEbay / (1 + uSt)
 			rawEbay = netEbay - versand - provision
@@ -156,6 +161,7 @@ func main() {
 			vkShop = GoLib.Round(vkShopCalc, 2)
 		
 			einstand = ek + (ek * frachtMarge/100)
+			fmt.Println(provision)
 
 			writeOutput()
 			continue
@@ -164,6 +170,10 @@ func main() {
 
 		provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
 		provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+		switch kat {
+		case "b": provision = provisionBoote
+		case "g": provision = provisionGarten
+		}
 
 		netEbay = vkEbay / (1 + uSt)
 		rawEbay = netEbay - versand - provision
@@ -173,6 +183,7 @@ func main() {
 
 		einstand = ek + (ek * frachtMarge/100)
 
+	fmt.Println(provision)
 		writeOutput()
 	}
 }
