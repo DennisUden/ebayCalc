@@ -47,6 +47,16 @@ var einstand float64
 
 var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 
+func greeting() {
+	fmt.Println("______________.                  _________        .__          ")
+	fmt.Println("\\_   _____/\\_ |__ _____  ___.__. \\_   ___ \\_____  |  |   ____  ")
+	fmt.Println(" |    __)_  | __ \\\\__  \\<   |  | /    \\  \\/\\__  \\ |  | _/ ___\\ ")
+	fmt.Println(" |        \\ | \\_\\ \\/ __ \\\\___  | \\     \\____/ __ \\|  |_\\  \\___ ")
+	fmt.Println("/_______  / |___  (____  / ____|  \\______  (____  /____/\\___  >")
+	fmt.Println("        \\/      \\/     \\/\\/              \\/     \\/          \\/ ")
+	fmt.Println("Press q to quit")
+}
+
 func newInput(question string) string {
 	fmt.Printf("%v: ", question)
 	answer, _ := reader.ReadString('\n')
@@ -88,6 +98,8 @@ func writeOutput() {
 }
 
 func main() {
+	greeting()
+
 	ekString = newInput("Einkaufspreis")
 	ek = toFloat(ekString)
 
@@ -97,6 +109,7 @@ func main() {
 	mengeString = newInput("Menge")
 	menge = toFloat(mengeString)
 
+	fmt.Println("Press b for boats or g for garden categories")
 	kat = newInput("Kategorie")
 
 	vkEbayString = newInput("Ebay Preis")
@@ -121,6 +134,7 @@ func main() {
 	writeOutput()
 
 	for i := 0; i >= 0; i++ {
+		fmt.Println("Press ek to start with a new product")
 		vkEbayString = newInput("Ebay Preis")
 		if vkEbayString == "ek" {
 			ekString = newInput("Einkaufspreis")
