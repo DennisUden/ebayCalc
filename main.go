@@ -146,6 +146,9 @@ func main() {
 			vkEbayString = newInput("Ebay Preis")
 			vkEbay = toFloat(vkEbayString)
 
+			provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+			provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+
 			netEbay = vkEbay / (1 + uSt)
 			rawEbay = netEbay - versand - provision
 		
@@ -158,6 +161,10 @@ func main() {
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
+
+		provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+		provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+
 		netEbay = vkEbay / (1 + uSt)
 		rawEbay = netEbay - versand - provision
 		
