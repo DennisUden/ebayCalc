@@ -65,7 +65,7 @@ func greeting() {
 	fmt.Println("/_______  / |___  (____  / ____|  \\______  (____  /____/\\___  >")
 	fmt.Println("        \\/      \\/     \\/\\/              \\/     \\/          \\/ ")
 
-	fmt.Println(colorYellow+"Press q to quit"+colorReset)
+	fmt.Println(colorYellow+"Send q to quit"+colorReset)
 }
 
 func newInput(question string) string {
@@ -137,7 +137,7 @@ func main() {
 	mengeString = newInput("Menge")
 	menge = toFloat(mengeString)
 
-	fmt.Println(colorYellow+"Press b for boats or g for garden categories"+colorReset)
+	fmt.Println(colorYellow+"Send b for boats or g for garden categories"+colorReset)
 	kat = newInput("Kategorie")
 
 	vkEbayString = newInput("Ebay Preis")
@@ -148,8 +148,9 @@ func main() {
 	writeOutput()
 
 	for i := 0; i >= 0; i++ {
-		fmt.Println(colorYellow+"Press ek to start with a new product"+colorReset)
+		fmt.Println(colorYellow+"Send ek to start with a new product"+colorReset)
 		vkEbayString = newInput("Ebay Preis")
+
 		if vkEbayString == "ek" {
 			ekString = newInput("Einkaufspreis")
 			ek = toFloat(ekString)
@@ -163,6 +164,7 @@ func main() {
 			calcOutput()
 
 			writeOutput()
+
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
