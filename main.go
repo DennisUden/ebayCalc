@@ -47,6 +47,16 @@ var einstand float64
 
 var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 
+var colorReset string  = "\033[0m"
+var colorRed string    = "\033[31m"
+var colorGreen string  = "\033[32m"
+var colorYellow string = "\033[33m"
+var colorBlue string   = "\033[34m"
+var colorPurple string = "\033[35m"
+var colorCyan string   = "\033[36m"
+var colorGray string   = "\033[37m"
+var colorWhite string  = "\033[97m"
+
 func greeting() {
 	fmt.Println("______________.                  _________        .__          ")
 	fmt.Println("\\_   _____/\\_ |__ _____  ___.__. \\_   ___ \\_____  |  |   ____  ")
@@ -54,7 +64,8 @@ func greeting() {
 	fmt.Println(" |        \\ | \\_\\ \\/ __ \\\\___  | \\     \\____/ __ \\|  |_\\  \\___ ")
 	fmt.Println("/_______  / |___  (____  / ____|  \\______  (____  /____/\\___  >")
 	fmt.Println("        \\/      \\/     \\/\\/              \\/     \\/          \\/ ")
-	fmt.Println("Press q to quit")
+
+	fmt.Println(colorYellow+"Press q to quit"+colorReset)
 }
 
 func newInput(question string) string {
@@ -94,7 +105,6 @@ func calcOutput() {
 }
 
 func writeOutput() {
-	// farben hinzufügen
 	fmt.Println("Shop Preis:", vkShop)
 	
 	fmt.Println("-----------------------------------------")
@@ -127,7 +137,7 @@ func main() {
 	mengeString = newInput("Menge")
 	menge = toFloat(mengeString)
 
-	fmt.Println("Press b for boats or g for garden categories")
+	fmt.Println(colorYellow+"Press b for boats or g for garden categories"+colorReset)
 	kat = newInput("Kategorie")
 
 	vkEbayString = newInput("Ebay Preis")
@@ -138,7 +148,7 @@ func main() {
 	writeOutput()
 
 	for i := 0; i >= 0; i++ {
-		fmt.Println("Press ek to start with a new product")
+		fmt.Println(colorYellow+"Press ek to start with a new product"+colorReset)
 		vkEbayString = newInput("Ebay Preis")
 		if vkEbayString == "ek" {
 			ekString = newInput("Einkaufspreis")
