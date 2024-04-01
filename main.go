@@ -51,6 +51,9 @@ func newInput(question string) string {
 	fmt.Printf("%v: ", question)
 	answer, _ := reader.ReadString('\n')
 	answer = strings.TrimSpace(answer)
+	if answer == "q" {
+		os.Exit(0)
+	}
 	return answer
 }
 
