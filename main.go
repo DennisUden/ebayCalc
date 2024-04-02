@@ -1,3 +1,6 @@
+// to add:
+// 1) comma / dot delimitors for decimals
+// 2) color output table
 package main
 
 import (
