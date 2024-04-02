@@ -1,6 +1,5 @@
 // to add:
-// 1) comma / dot delimitors for decimals
-// 2) color output table
+// 1) color output table
 package main
 
 import (
@@ -75,6 +74,7 @@ func newInput(question string) string {
 	fmt.Printf("%v: ", question)
 	answer, _ := reader.ReadString('\n')
 	answer = strings.TrimSpace(answer)
+	answer = strings.ReplaceAll(answer, ",", ".")
 	if answer == "q" {
 		os.Exit(0)
 	}
