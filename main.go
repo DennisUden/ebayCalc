@@ -1,5 +1,4 @@
 // to add:
-// 1) color output table
 package main
 
 import (
@@ -121,9 +120,17 @@ func writeOutput() {
 		margeCalc := gewinnCalc * 100 / rawEbay 
 		marge := GoLib.Round(margeCalc, 2)
 
+		margeStr := strconv.FormatFloat(marge, 'f', 2, 64)
+		var margeColor string	
+		switch {
+		case marge >= 50: margeColor = colorGreen+margeStr+colorReset
+		case marge >= 30: margeColor = colorYellow+margeStr+colorReset
+		case marge < 30: margeColor = colorRed+margeStr+colorReset
+		}
+
 		breakeven := GoLib.RoundUp((einstand * menge) / gewinnCalc)
 
-		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, marge, breakeven)
+		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, margeColor, breakeven)
 	}
 	fmt.Println("-----------------------------------------")
 }
