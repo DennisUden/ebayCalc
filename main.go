@@ -17,6 +17,16 @@ const versand float64 = 5.50
 const paypalFix float64 = 0.35
 const paypalVar float64 = 0.0299
 
+const colorReset string  = "\033[0m"
+const colorRed string    = "\033[31m"
+const colorGreen string  = "\033[32m"
+const colorYellow string = "\033[33m"
+const colorBlue string   = "\033[34m"
+const colorPurple string = "\033[35m"
+const colorCyan string   = "\033[36m"
+const colorGray string   = "\033[37m"
+const colorWhite string  = "\033[97m"
+
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
 var ekString string 
@@ -48,15 +58,6 @@ var einstand float64
 
 var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 
-var colorReset string  = "\033[0m"
-var colorRed string    = "\033[31m"
-var colorGreen string  = "\033[32m"
-var colorYellow string = "\033[33m"
-var colorBlue string   = "\033[34m"
-var colorPurple string = "\033[35m"
-var colorCyan string   = "\033[36m"
-var colorGray string   = "\033[37m"
-var colorWhite string  = "\033[97m"
 
 func greeting() {
 	fmt.Println("______________.                  _________        .__          ")
