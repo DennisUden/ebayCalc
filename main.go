@@ -10,6 +10,13 @@ import (
 	"github.com/DennisUden/GoLib"
 )
 
+const uSt float64 = 0.19
+
+const versand float64 = 5.50
+
+const paypalFix float64 = 0.35
+const paypalVar float64 = 0.0299
+
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
 var ekString string 
@@ -28,18 +35,11 @@ var vkEbay float64
 
 var provision float64
 	
-var uSt float64 = 0.19
-
-var versand float64 = 5.50
-
 var provisionBoote float64
 var provisionGarten float64
 	
 var netEbay float64
 var rawEbay float64
-
-var paypalFix float64 = 0.35
-var paypalVar float64 = 0.0299
 
 var vkShopCalc float64
 var vkShop float64
