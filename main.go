@@ -157,7 +157,7 @@ func main() {
 
 	writeOutput()
 
-	for i := 0; i >= 0; i++ {
+	for {
 		fmt.Println(colorYellow+"Send ek to start with a new product"+colorReset)
 		vkEbayString = newInput("Ebay Preis")
 
