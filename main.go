@@ -1,5 +1,4 @@
 // to add:
-// 1) clean up global variables
 package main
 
 import (
@@ -10,43 +9,6 @@ import (
 	"strings"
 	"math"
 )
-
-const uSt float64 = 0.19
-
-const versand float64 = 5.50
-
-const paypalFix float64 = 0.35
-const paypalVar float64 = 0.0299
-
-var reader *bufio.Reader = bufio.NewReader(os.Stdin)
-
-var ekString string 
-var ek float64
-
-var frachtMargeString string
-var frachtMarge float64
-
-var mengeString string 
-var menge float64
-
-var kat string
-	
-var vkEbayString string
-var vkEbay float64
-
-var provision float64
-	
-var provisionBoote float64
-var provisionGarten float64
-	
-var netEbay float64
-var rawEbay float64
-
-var vkShopCalc float64
-
-var einstand float64
-
-var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 
 func color(s string, c string) string {
 	m := map[string]string{
@@ -76,6 +38,7 @@ func greeting() {
 }
 
 func newInput(question string) string {
+	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf("%v: ", question)
 	answer, _ := reader.ReadString('\n')
 	answer = strings.TrimSpace(answer)
@@ -94,29 +57,37 @@ func toFloat(a string) float64 {
 	return aFloat
 }
 
-func calcOutput() {
-	provisionBoote = min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
-	provisionGarten = min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
+func calcOutput(kat string, ek, frachtMarge, menge, vkEbay float64, rawEbay, vkShopCalc, einstand *float64) {
+	provisionBoote := min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
+	provisionGarten := min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
 	
+	var provision float64
 	switch kat {
 		case "b": provision = provisionBoote
 		case "g": provision = provisionGarten
 	}
 
-	netEbay = vkEbay / (1 + uSt)
-	rawEbay = netEbay - versand - provision
+	const uSt float64 = 0.19
+	const versand float64 = 5.50
+	const paypalFix float64 = 0.35
+	const paypalVar float64 = 0.0299
 
-	vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+	netEbay := vkEbay / (1 + uSt)
+	*rawEbay = netEbay - versand - provision
 
-	einstand = ek + (ek * frachtMarge/100)
+	*vkShopCalc = (*rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+
+	*einstand = ek + (ek * frachtMarge/100)
 }
 
-func writeOutput() {
+func writeOutput(menge, rawEbay, vkShopCalc, einstand float64) {
 	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
 	
 	fmt.Println("-----------------------------------------")
 	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
 	fmt.Println("-----------------------------------------")
+
+	var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 	for i := 0; i < len(discount); i++ {
 
 		gewinnCalc := rawEbay * (1 - discount[i] / 100) - einstand
@@ -125,7 +96,7 @@ func writeOutput() {
 		margeCalc := gewinnCalc * 100 / rawEbay 
 		marge := fmt.Sprintf("%.2f", margeCalc)
 
-		var margeColor string	
+		var margeColor string
 		switch {
 		case margeCalc >= 50: margeColor = color(marge, "green")
 		case margeCalc >= 30: margeColor = color(marge, "yellow")
@@ -142,24 +113,30 @@ func writeOutput() {
 func main() {
 	greeting()
 
-	ekString = newInput("Einkaufspreis")
-	ek = toFloat(ekString)
+	ekString := newInput("Einkaufspreis")
+	ek := toFloat(ekString)
 
-	frachtMargeString = newInput("Frachtmarge")
-	frachtMarge = toFloat(frachtMargeString)
+	frachtMargeString := newInput("Frachtmarge")
+	frachtMarge := toFloat(frachtMargeString)
 
-	mengeString = newInput("Menge")
-	menge = toFloat(mengeString)
+	mengeString := newInput("Menge")
+	menge := toFloat(mengeString)
 
 	fmt.Println(color("Send b for boats or g for garden categories", "yellow"))
-	kat = newInput("Kategorie")
+	kat := newInput("Kategorie")
 
-	vkEbayString = newInput("Ebay Preis")
-	vkEbay = toFloat(vkEbayString)
+	vkEbayString := newInput("Ebay Preis")
+	vkEbay := toFloat(vkEbayString)
 
-	calcOutput()
+	var rawEbay float64
 
-	writeOutput()
+	var vkShopCalc float64
+
+	var einstand float64
+
+	calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
+
+	writeOutput(menge, rawEbay, vkShopCalc, einstand)
 
 	for {
 		fmt.Println(color("Send ek to start with a new product", "yellow"))
@@ -175,16 +152,16 @@ func main() {
 			vkEbayString = newInput("Ebay Preis")
 			vkEbay = toFloat(vkEbayString)
 
-			calcOutput()
+			calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
 
-			writeOutput()
+			writeOutput(menge, rawEbay, vkShopCalc, einstand)
 
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
 
-		calcOutput()
+		calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
 
-		writeOutput()
+		writeOutput(menge, rawEbay, vkShopCalc, einstand)
 	}
 }
