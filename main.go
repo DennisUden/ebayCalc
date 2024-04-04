@@ -1,4 +1,7 @@
 // to add:
+// string build greeting
+// input loop cleanup
+
 package main
 
 import (
@@ -10,8 +13,8 @@ import (
 	"math"
 )
 
-func color(s string, c string) string {
-	m := map[string]string{
+func color(text string, color string) string {
+	colorMap := map[string]string{
 		"reset": "\033[0m",
 		"red": "\033[31m",
 		"green": "\033[32m",
@@ -23,9 +26,10 @@ func color(s string, c string) string {
 		"white": "\033[97m",
 	}
 
-	return m[c]+s+m["reset"]
+	return colorMap[color]+text+colorMap["reset"]
 }
 
+// move into one string
 func greeting() {
 	fmt.Println("______________.                  _________        .__          ")
 	fmt.Println("\\_   _____/\\_ |__ _____  ___.__. \\_   ___ \\_____  |  |   ____  ")
@@ -109,7 +113,7 @@ func writeOutput(menge, rawEbay, vkShopCalc, einstand float64) {
 	}
 	fmt.Println("-----------------------------------------")
 }
-
+// this section looks messy. i hope to improve it in the near future
 func main() {
 	greeting()
 
@@ -129,9 +133,7 @@ func main() {
 	vkEbay := toFloat(vkEbayString)
 
 	var rawEbay float64
-
 	var vkShopCalc float64
-
 	var einstand float64
 
 	calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
