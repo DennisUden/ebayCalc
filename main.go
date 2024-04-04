@@ -1,4 +1,6 @@
 // to add:
+// 1) clean up global variables
+// 2) move make color variables into a method
 package main
 
 import (
@@ -7,7 +9,7 @@ import (
 	"bufio"
 	"strconv"
 	"strings"
-	"github.com/DennisUden/GoLib"
+	"math"
 )
 
 const uSt float64 = 0.19
@@ -52,7 +54,6 @@ var netEbay float64
 var rawEbay float64
 
 var vkShopCalc float64
-var vkShop float64
 
 var einstand float64
 
@@ -102,13 +103,12 @@ func calcOutput() {
 	rawEbay = netEbay - versand - provision
 
 	vkShopCalc = (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
-	vkShop = GoLib.Round(vkShopCalc, 2)
 
 	einstand = ek + (ek * frachtMarge/100)
 }
 
 func writeOutput() {
-	fmt.Println("Shop Preis:", vkShop)
+	fmt.Printf("Shop Preis: %.2f", vkShopCalc)
 	
 	fmt.Println("-----------------------------------------")
 	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
@@ -116,20 +116,19 @@ func writeOutput() {
 	for i := 0; i < len(discount); i++ {
 
 		gewinnCalc := rawEbay * (1 - discount[i] / 100) - einstand
-		gewinn := GoLib.Round(gewinnCalc, 2)
+		gewinn := fmt.Sprintf("%.2f", gewinnCalc)
 
 		margeCalc := gewinnCalc * 100 / rawEbay 
-		marge := GoLib.Round(margeCalc, 2)
+		marge := fmt.Sprintf("%.2f", margeCalc)
 
-		margeStr := strconv.FormatFloat(marge, 'f', 2, 64)
 		var margeColor string	
 		switch {
-		case marge >= 50: margeColor = colorGreen+margeStr+colorReset
-		case marge >= 30: margeColor = colorYellow+margeStr+colorReset
-		case marge < 30: margeColor = colorRed+margeStr+colorReset
+		case margeCalc >= 50: margeColor = colorGreen+marge+colorReset
+		case margeCalc >= 30: margeColor = colorYellow+marge+colorReset
+		case margeCalc < 30: margeColor = colorRed+marge+colorReset
 		}
 
-		breakeven := GoLib.RoundUp((einstand * menge) / gewinnCalc)
+		breakeven := math.Ceil((einstand * menge) / gewinnCalc)
 
 		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, margeColor, breakeven)
 	}
