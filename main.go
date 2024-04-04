@@ -1,6 +1,5 @@
 // to add:
 // 1) clean up global variables
-// 2) move make color variables into a method
 package main
 
 import (
@@ -18,16 +17,6 @@ const versand float64 = 5.50
 
 const paypalFix float64 = 0.35
 const paypalVar float64 = 0.0299
-
-const colorReset string  = "\033[0m"
-const colorRed string    = "\033[31m"
-const colorGreen string  = "\033[32m"
-const colorYellow string = "\033[33m"
-const colorBlue string   = "\033[34m"
-const colorPurple string = "\033[35m"
-const colorCyan string   = "\033[36m"
-const colorGray string   = "\033[37m"
-const colorWhite string  = "\033[97m"
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
@@ -59,6 +48,21 @@ var einstand float64
 
 var discount [5]float64 = [5]float64{0, 5, 10, 15, 20}
 
+func color(s string, c string) string {
+	m := map[string]string{
+		"reset": "\033[0m",
+		"red": "\033[31m",
+		"green": "\033[32m",
+		"yellow": "\033[33m",
+		"blue": "\033[34m",
+		"purple": "\033[35m",
+		"cyan": "\033[36m",
+		"gray": "\033[37m",
+		"white": "\033[97m",
+	}
+
+	return m[c]+s+m["reset"]
+}
 
 func greeting() {
 	fmt.Println("______________.                  _________        .__          ")
@@ -68,7 +72,7 @@ func greeting() {
 	fmt.Println("/_______  / |___  (____  / ____|  \\______  (____  /____/\\___  >")
 	fmt.Println("        \\/      \\/     \\/\\/              \\/     \\/          \\/ ")
 
-	fmt.Println(colorYellow+"Send q to quit"+colorReset)
+	fmt.Println(color("Send q to quit", "yellow"))
 }
 
 func newInput(question string) string {
@@ -108,7 +112,7 @@ func calcOutput() {
 }
 
 func writeOutput() {
-	fmt.Printf("Shop Preis: %.2f", vkShopCalc)
+	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
 	
 	fmt.Println("-----------------------------------------")
 	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
@@ -123,9 +127,9 @@ func writeOutput() {
 
 		var margeColor string	
 		switch {
-		case margeCalc >= 50: margeColor = colorGreen+marge+colorReset
-		case margeCalc >= 30: margeColor = colorYellow+marge+colorReset
-		case margeCalc < 30: margeColor = colorRed+marge+colorReset
+		case margeCalc >= 50: margeColor = color(marge, "green")
+		case margeCalc >= 30: margeColor = color(marge, "yellow")
+		case margeCalc < 30: margeColor = color(marge, "red")
 		}
 
 		breakeven := math.Ceil((einstand * menge) / gewinnCalc)
@@ -147,7 +151,7 @@ func main() {
 	mengeString = newInput("Menge")
 	menge = toFloat(mengeString)
 
-	fmt.Println(colorYellow+"Send b for boats or g for garden categories"+colorReset)
+	fmt.Println(color("Send b for boats or g for garden categories", "yellow"))
 	kat = newInput("Kategorie")
 
 	vkEbayString = newInput("Ebay Preis")
@@ -158,7 +162,7 @@ func main() {
 	writeOutput()
 
 	for {
-		fmt.Println(colorYellow+"Send ek to start with a new product"+colorReset)
+		fmt.Println(color("Send ek to start with a new product", "yellow"))
 		vkEbayString = newInput("Ebay Preis")
 
 		if vkEbayString == "ek" {
