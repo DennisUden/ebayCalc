@@ -1,6 +1,5 @@
 // to add:
 // input loop cleanup
-// maybe combine calc and write funcs
 
 package main
 
@@ -63,11 +62,13 @@ func toFloat(a string) float64 {
 	return aFloat
 }
 
-func calcOutput(kat string, ek, frachtMarge, menge, vkEbay float64, rawEbay, vkShopCalc, einstand *float64) {
+func writeOutput(kat string, ek, frachtMarge, menge, vkEbay float64) {
+
 	provisionBoote := min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
 	provisionGarten := min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
 
 	var provision float64
+
 	switch kat {
 	case "b": provision = provisionBoote
 	case "g": provision = provisionGarten
@@ -79,15 +80,12 @@ func calcOutput(kat string, ek, frachtMarge, menge, vkEbay float64, rawEbay, vkS
 	const paypalVar float64 = 0.0299
 
 	netEbay := vkEbay / (1 + uSt)
-	*rawEbay = netEbay - versand - provision
+	rawEbay := netEbay - versand - provision
 
-	*vkShopCalc = (*rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+	vkShopCalc := (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
 
-	*einstand = ek + (ek * frachtMarge/100)
-}
+	einstand := ek + (ek * frachtMarge/100)
 
-// clean up function, move calculations out
-func writeOutput(menge, rawEbay, vkShopCalc, einstand float64) {
 	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
 
 	fmt.Println("-----------------------------------------")
@@ -135,13 +133,7 @@ func main() {
 	vkEbayString := newInput("Ebay Preis")
 	vkEbay := toFloat(vkEbayString)
 
-	var rawEbay float64
-	var vkShopCalc float64
-	var einstand float64
-
-	calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
-
-	writeOutput(menge, rawEbay, vkShopCalc, einstand)
+	writeOutput(kat, ek, frachtMarge, menge, vkEbay)
 
 	for {
 		fmt.Println(color("Send ek to start with a new product", "yellow"))
@@ -157,16 +149,12 @@ func main() {
 			vkEbayString = newInput("Ebay Preis")
 			vkEbay = toFloat(vkEbayString)
 
-			calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
-
-			writeOutput(menge, rawEbay, vkShopCalc, einstand)
+			writeOutput(kat, ek, frachtMarge, menge, vkEbay)
 
 			continue
 		}
 		vkEbay = toFloat(vkEbayString)
 
-		calcOutput(kat, ek, frachtMarge, menge, vkEbay, &rawEbay, &vkShopCalc, &einstand)
-
-		writeOutput(menge, rawEbay, vkShopCalc, einstand)
+		writeOutput(kat, ek, frachtMarge, menge, vkEbay)
 	}
 }
