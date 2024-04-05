@@ -1,6 +1,6 @@
 // to add:
-// string build greeting
 // input loop cleanup
+// maybe combine calc and write funcs
 
 package main
 
@@ -29,16 +29,18 @@ func color(text string, color string) string {
 	return colorMap[color]+text+colorMap["reset"]
 }
 
-// move into one string
 func greeting() {
-	fmt.Println("______________.                  _________        .__          ")
-	fmt.Println("\\_   _____/\\_ |__ _____  ___.__. \\_   ___ \\_____  |  |   ____  ")
-	fmt.Println(" |    __)_  | __ \\\\__  \\<   |  | /    \\  \\/\\__  \\ |  | _/ ___\\ ")
-	fmt.Println(" |        \\ | \\_\\ \\/ __ \\\\___  | \\     \\____/ __ \\|  |_\\  \\___ ")
-	fmt.Println("/_______  / |___  (____  / ____|  \\______  (____  /____/\\___  >")
-	fmt.Println("        \\/      \\/     \\/\\/              \\/     \\/          \\/ ")
+	s := `
 
-	fmt.Println(color("Send q to quit", "yellow"))
+	 _____ _                    ____      _      
+	| ____| |__   __ _ _   _   / ___|__ _| | ___ 
+	|  _| | '_ \ / _' | | | | | |   / _' | |/ __|
+	| |___| |_) | (_| | |_| | | |__| (_| | | (__ 
+	|_____|_.__/ \__,_|\__, |  \____\__,_|_|\___|
+			   |___/                     
+
+	`
+	fmt.Println(s)
 }
 
 func newInput(question string) string {
@@ -64,11 +66,11 @@ func toFloat(a string) float64 {
 func calcOutput(kat string, ek, frachtMarge, menge, vkEbay float64, rawEbay, vkShopCalc, einstand *float64) {
 	provisionBoote := min(990, vkEbay) * 11/100 + max(0, vkEbay - 990) * 2/100
 	provisionGarten := min(200, vkEbay) * 12/100 + max(0, vkEbay - 200) * 2/100
-	
+
 	var provision float64
 	switch kat {
-		case "b": provision = provisionBoote
-		case "g": provision = provisionGarten
+	case "b": provision = provisionBoote
+	case "g": provision = provisionGarten
 	}
 
 	const uSt float64 = 0.19
@@ -84,9 +86,10 @@ func calcOutput(kat string, ek, frachtMarge, menge, vkEbay float64, rawEbay, vkS
 	*einstand = ek + (ek * frachtMarge/100)
 }
 
+// clean up function, move calculations out
 func writeOutput(menge, rawEbay, vkShopCalc, einstand float64) {
 	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
-	
+
 	fmt.Println("-----------------------------------------")
 	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
 	fmt.Println("-----------------------------------------")
