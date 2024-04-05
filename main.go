@@ -1,5 +1,6 @@
 // to add:
 // input loop cleanup
+// collect inputs in struct
 
 package main
 
@@ -44,7 +45,7 @@ func greeting() {
 
 func newInput(question string) string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("%v: ", question)
+	fmt.Printf("%v: ", color(question, "purple"))
 	answer, _ := reader.ReadString('\n')
 	answer = strings.TrimSpace(answer)
 	answer = strings.ReplaceAll(answer, ",", ".")
@@ -86,6 +87,7 @@ func writeOutput(kat string, ek, frachtMarge, menge, vkEbay float64) {
 
 	einstand := ek + (ek * frachtMarge/100)
 
+	fmt.Println("-----------------------------------------")
 	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
 
 	fmt.Println("-----------------------------------------")
@@ -127,7 +129,7 @@ func main() {
 	mengeString := newInput("Menge")
 	menge := toFloat(mengeString)
 
-	fmt.Println(color("Send b for boats or g for garden categories", "yellow"))
+	fmt.Println(color("Send ", "yellow")+"b"+color(" for boats or ", "yellow")+"g"+color(" for garden categories", "yellow"))
 	kat := newInput("Kategorie")
 
 	vkEbayString := newInput("Ebay Preis")
@@ -136,7 +138,7 @@ func main() {
 	writeOutput(kat, ek, frachtMarge, menge, vkEbay)
 
 	for {
-		fmt.Println(color("Send ek to start with a new product", "yellow"))
+		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
 		vkEbayString = newInput("Ebay Preis")
 
 		if vkEbayString == "ek" {
