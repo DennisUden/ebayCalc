@@ -145,7 +145,7 @@ func main() {
 
 	vkEbayString := newInput("Ebay Preis")
 	inputs.vkEbay = toFloat(vkEbayString)
-
+	
 	writeOutput(inputs)
 
 	for {
