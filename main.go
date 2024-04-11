@@ -73,8 +73,8 @@ func toFloat(a string) float64 {
 
 func writeOutput(inputs inputs) {
 
-	provisionBoote := min(990, inputs.vkEbay) * 11/100 + max(0, inputs.vkEbay - 990) * 2/100
-	provisionGarten := min(200, inputs.vkEbay) * 12/100 + max(0, inputs.vkEbay - 200) * 2/100
+	provisionBoote := min(990, inputs.vkEbay) * 12/100 + max(0, inputs.vkEbay - 990) * 2/100 + 0.35
+	provisionGarten := min(200, inputs.vkEbay) * 12/100 + max(0, inputs.vkEbay - 200) * 2/100 + 0.35
 
 	var provision float64
 
@@ -111,7 +111,7 @@ func writeOutput(inputs inputs) {
 
 	for i := 0; i < len(discount); i++ {
 
-		gewinnCalc := rawEbay * (1 - discount[i] / 100) - einstand
+		gewinnCalc := rawEbay * (1 - discount[i]/100) - einstand
 		gewinn := fmt.Sprintf("%.2f", gewinnCalc)
 
 		margeCalc := gewinnCalc * 100 / rawEbay 
@@ -124,7 +124,7 @@ func writeOutput(inputs inputs) {
 		case margeCalc < 30: margeColor = color(marge, "red")
 		}
 
-		breakevenCalc := math.Ceil((einstand * inputs.menge) / gewinnCalc)
+		breakevenCalc := math.Ceil((einstand * inputs.menge) / (vkShopCalc * (1 - discount[i]/100)))
 		var breakeven string
 		if breakevenCalc < 0 {
 			breakeven = "never"
