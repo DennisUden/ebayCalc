@@ -85,18 +85,19 @@ func writeOutput(inputs inputs) {
 
 	const uSt float64 = 0.19
 	const versand float64 = 5.50
-	const paypalFix float64 = 0.35
+	const paypalFix float64 = 0.39
 	const paypalVar float64 = 0.0299
 
 	netEbay := inputs.vkEbay / (1 + uSt)
 	rawEbay := netEbay - versand - provision
 
-	if rawEbay <= 0 {
+/* 	if rawEbay <= 0 {
 		fmt.Println("Error, rawEbay negative. Set higher price")
 		return
-	}
+	} */
 
-	vkShopCalc := (rawEbay + paypalFix) / ((1 - paypalVar) / (1 + uSt))
+	vkShopCalc := (rawEbay + paypalFix) / (1 / (1 + uSt) - paypalVar)
+	vkShopNet := vkShopCalc / (1 + uSt)
 
 	einstand := inputs.ek + (inputs.ek * inputs.fracht/100)
 
@@ -110,8 +111,10 @@ func writeOutput(inputs inputs) {
 	discount := [5]float64{0, 5, 10, 15, 20}
 
 	for i := 0; i < len(discount); i++ {
+		vkShopDisc := vkShopNet * (1 - discount[i]/100)
+		paypalGes := paypalFix + paypalVar * vkShopDisc
 
-		gewinnCalc := rawEbay * (1 - discount[i]/100) - einstand
+		gewinnCalc := vkShopDisc - paypalGes - einstand
 		gewinn := fmt.Sprintf("%.2f", gewinnCalc)
 
 		margeCalc := gewinnCalc * 100 / rawEbay 
@@ -124,9 +127,9 @@ func writeOutput(inputs inputs) {
 		case margeCalc < 30: margeColor = color(marge, "red")
 		}
 
-		breakevenCalc := math.Ceil((einstand * inputs.menge) / (vkShopCalc * (1 - discount[i]/100)))
+		breakevenCalc := math.Ceil((einstand * inputs.menge) / (vkShopDisc - paypalGes))
 		var breakeven string
-		if breakevenCalc < 0 {
+		if breakevenCalc > inputs.menge {
 			breakeven = "never"
 		} else {
 			breakeven = fmt.Sprintf("%v", breakevenCalc)
