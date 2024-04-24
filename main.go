@@ -21,8 +21,8 @@ type inputs struct {
 	vkEbay float64
 	}
 
-func color(text string, color string) string {
-	colorMap := map[string]string{
+func getColor() map[string]string {
+	color := map[string]string{
 		"reset": "\033[0m",
 		"red": "\033[31m",
 		"green": "\033[32m",
@@ -33,8 +33,12 @@ func color(text string, color string) string {
 		"gray": "\033[37m",
 		"white": "\033[97m",
 	}
+	return color
+}
 
-	return colorMap[color]+text+colorMap["reset"]
+func color(text string, color string) string {
+	
+	return getColor()[color]+text+getColor()["reset"]
 }
 
 func greeting() {
