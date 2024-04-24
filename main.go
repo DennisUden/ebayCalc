@@ -37,7 +37,6 @@ func getColor() map[string]string {
 }
 
 func color(text string, color string) string {
-	
 	return getColor()[color]+text+getColor()["reset"]
 }
 
@@ -105,12 +104,12 @@ func writeOutput(inputs inputs) {
 
 	einstand := inputs.ek + (inputs.ek * inputs.fracht/100)
 
-	fmt.Println("-----------------------------------------")
+	fmt.Println("-------------------------------------------")
 	fmt.Printf("Shop Preis: %.2f\n", vkShopCalc)
 
-	fmt.Println("-----------------------------------------")
-	fmt.Printf("| %8v | %6v | %5v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
-	fmt.Println("-----------------------------------------")
+	fmt.Println("-------------------------------------------")
+	fmt.Printf("| %8v | %6v | %7v | %9v |\n", "Discount", "Gewinn", "Marge", "Breakeven")
+	fmt.Println("-------------------------------------------")
 
 	discount := [5]float64{0, 5, 10, 15, 20}
 
@@ -126,9 +125,9 @@ func writeOutput(inputs inputs) {
 
 		var margeColor string
 		switch {
-		case margeCalc >= 50: margeColor = color(marge, "green")
-		case margeCalc >= 30: margeColor = color(marge, "yellow")
-		case margeCalc < 30: margeColor = color(marge, "red")
+		case margeCalc >= 50: margeColor = getColor()["green"]
+		case margeCalc >= 30: margeColor = getColor()["yellow"]
+		case margeCalc < 30: margeColor = getColor()["red"]
 		}
 
 		breakevenCalc := math.Ceil((einstand * inputs.menge) / (vkShopDisc - paypalGes))
@@ -139,9 +138,9 @@ func writeOutput(inputs inputs) {
 			breakeven = fmt.Sprintf("%v", breakevenCalc)
 		}
 
-		fmt.Printf("| %8v | %6v | %5v | %9v |\n", discount[i], gewinn, margeColor, breakeven)
+		fmt.Printf("| %8v | %6v | %s%7v%s | %9v |\n", discount[i], gewinn, margeColor, marge, getColor()["reset"],breakeven)
 	}
-	fmt.Println("-----------------------------------------")
+	fmt.Println("------------------------------------------")
 }
 // this section looks messy. i hope to improve it in the near future
 func main() {
