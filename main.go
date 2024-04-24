@@ -1,6 +1,7 @@
 // to add:
 // input loop cleanup
 // maybe switch to fmt.scanf
+// marge and breakeven sometimes break
 
 package main
 
