@@ -95,11 +95,6 @@ func writeOutput(inputs inputs) {
 	netEbay := inputs.vkEbay / (1 + uSt)
 	rawEbay := netEbay - versand - provision
 
-/* 	if rawEbay <= 0 {
-		fmt.Println("Error, rawEbay negative. Set higher price")
-		return
-	} */
-
 	vkShopCalc := (rawEbay + paypalFix) / (1 / (1 + uSt) - paypalVar)
 	vkShopNet := vkShopCalc / (1 + uSt)
 
@@ -121,8 +116,13 @@ func writeOutput(inputs inputs) {
 		gewinnCalc := vkShopDisc - paypalGes - einstand
 		gewinn := fmt.Sprintf("%.2f", gewinnCalc)
 
-		margeCalc := gewinnCalc * 100 / rawEbay 
-		marge := fmt.Sprintf("%.2f", margeCalc)
+		margeCalc := gewinnCalc * 100 / rawEbay
+		var marge string
+		if gewinnCalc < 0 {
+			marge = ""
+		} else {
+			marge = fmt.Sprintf("%.2f", margeCalc)
+		}
 
 		var margeColor string
 		switch {
@@ -133,15 +133,15 @@ func writeOutput(inputs inputs) {
 
 		breakevenCalc := math.Ceil((einstand * inputs.menge) / (vkShopDisc - paypalGes))
 		var breakeven string
-		if breakevenCalc > inputs.menge {
-			breakeven = "never"
+		if breakevenCalc > inputs.menge || breakevenCalc < 0 {
+			breakeven = ""
 		} else {
 			breakeven = fmt.Sprintf("%v", breakevenCalc)
 		}
 
 		fmt.Printf("| %8v | %6v | %s%7v%s | %9v |\n", discount[i], gewinn, margeColor, marge, getColor()["reset"],breakeven)
 	}
-	fmt.Println("------------------------------------------")
+	fmt.Println("-------------------------------------------")
 }
 // this section looks messy. i hope to improve it in the near future
 func main() {
