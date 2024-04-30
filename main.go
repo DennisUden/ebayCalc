@@ -67,12 +67,12 @@ func newInput(question string) string {
 	return answer
 }
 
-func toFloat(a string) float64 {
+func toFloat(a string) (float64, error) {
 	aFloat, err := strconv.ParseFloat(a, 64)
 	if err != nil {
-		fmt.Println(err)
-	}
-	return aFloat
+		return 0, err
+	} 
+	return aFloat, nil
 }
 
 func writeOutput(inputs inputs) {
@@ -149,43 +149,54 @@ func main() {
 
 	inputs := inputs{}
 
-	ekString := newInput("Einkaufspreis")
-	inputs.ek = toFloat(ekString)
+	// work in progress: wrapping each input-prompt in an error handler and a loop
+	for {
+		var err error
+
+		ekString := newInput("Einkaufspreis")
+		inputs.ek, err = toFloat(ekString)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
+	}
 		
 
-	frachtMargeString := newInput("Frachtmarge")
-	inputs.fracht = toFloat(frachtMargeString)
+	// frachtMargeString := newInput("Frachtmarge")
+	// inputs.fracht = toFloat(frachtMargeString)
 
-	mengeString := newInput("Menge")
-	inputs.menge = toFloat(mengeString)
+	// mengeString := newInput("Menge")
+	// inputs.menge = toFloat(mengeString)
 
 	fmt.Println(color("Send ", "yellow")+"b"+color(" for boats or ", "yellow")+"g"+color(" for garden categories", "yellow"))
 	inputs.kat = newInput("Kategorie")
 
 	vkEbayString := newInput("Ebay Preis")
-	inputs.vkEbay = toFloat(vkEbayString)
+	// inputs.vkEbay = toFloat(vkEbayString)
 	
 	writeOutput(inputs)
 
 	for {
 		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
-		vkEbayString = newInput("Ebay Preis")
+		// vkEbayString = newInput("Ebay Preis")
 
 		if vkEbayString == "ek" {
-			ekString = newInput("Einkaufspreis")
-			inputs.ek = toFloat(ekString)
+			// ekString = newInput("Einkaufspreis")
+			// inputs.ek = toFloat(ekString)
 
-			mengeString = newInput("Menge")
-			inputs.menge = toFloat(mengeString)
+			// mengeString = newInput("Menge")
+			// inputs.menge = toFloat(mengeString)
 
-			vkEbayString = newInput("Ebay Preis")
-			inputs.vkEbay = toFloat(vkEbayString)
+			// vkEbayString = newInput("Ebay Preis")
+			// inputs.vkEbay = toFloat(vkEbayString)
 
 			writeOutput(inputs)
 
 			continue
 		}
-		inputs.vkEbay = toFloat(vkEbayString)
+		// inputs.vkEbay = toFloat(vkEbayString)
 
 		writeOutput(inputs)
 	}
