@@ -162,42 +162,79 @@ func main() {
 		}
 		break
 	}
-		
+	
+	for {
+		var err error
 
-	// frachtMargeString := newInput("Frachtmarge")
-	// inputs.fracht = toFloat(frachtMargeString)
+		frachtMargeString := newInput("Frachtmarge")
+		inputs.fracht, err = toFloat(frachtMargeString)
 
-	// mengeString := newInput("Menge")
-	// inputs.menge = toFloat(mengeString)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
+	}
+
+	for {
+		var err error
+
+		mengeString := newInput("Menge")
+		inputs.menge, err = toFloat(mengeString)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
+	}
 
 	fmt.Println(color("Send ", "yellow")+"b"+color(" for boats or ", "yellow")+"g"+color(" for garden categories", "yellow"))
-	inputs.kat = newInput("Kategorie")
+	for {
+		inputs.kat = newInput("Kategorie")
 
-	vkEbayString := newInput("Ebay Preis")
-	// inputs.vkEbay = toFloat(vkEbayString)
+		if inputs.kat != "b" && inputs.kat != "g" {
+			fmt.Println("Please send a valid category letter")
+			continue
+		}
+		break
+	}
+
+	for {
+		var err error
+
+		vkEbayString := newInput("Ebay Preis")
+		inputs.vkEbay, err = toFloat(vkEbayString)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		break
+	}
 	
 	writeOutput(inputs)
 
-	for {
-		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
-		// vkEbayString = newInput("Ebay Preis")
-
-		if vkEbayString == "ek" {
-			// ekString = newInput("Einkaufspreis")
-			// inputs.ek = toFloat(ekString)
-
-			// mengeString = newInput("Menge")
-			// inputs.menge = toFloat(mengeString)
-
-			// vkEbayString = newInput("Ebay Preis")
-			// inputs.vkEbay = toFloat(vkEbayString)
-
-			writeOutput(inputs)
-
-			continue
-		}
-		// inputs.vkEbay = toFloat(vkEbayString)
-
-		writeOutput(inputs)
-	}
+//	for {
+//		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
+//		vkEbayString = newInput("Ebay Preis")
+//
+//		if vkEbayString == "ek" {
+//			ekString = newInput("Einkaufspreis")
+//			inputs.ek = toFloat(ekString)
+//
+//			mengeString = newInput("Menge")
+//			inputs.menge = toFloat(mengeString)
+//
+//			vkEbayString = newInput("Ebay Preis")
+//			inputs.vkEbay = toFloat(vkEbayString)
+//
+//			writeOutput(inputs)
+//
+//			continue
+//		}
+//		inputs.vkEbay = toFloat(vkEbayString)
+//
+//		writeOutput(inputs)
+//	}
 }
