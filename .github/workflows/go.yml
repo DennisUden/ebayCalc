@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-go@v5
 
     - name: Build for MacOS
-      run: GOOS=darwin GOARCH=arm64 go build mac -o ebayCalcMac
+      run: GOOS=darwin GOARCH=arm64 go build -o ebayCalcMac
 
     - name: Build for Linux
       run: GOOS=linux GOARCH=amd64 go build -o ebayCalcLinux
