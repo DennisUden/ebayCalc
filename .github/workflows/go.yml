@@ -20,11 +20,11 @@ jobs:
       uses: actions/setup-go@v5
 
     - name: Build for MacOS
-      run: GOOS=darwin GOARCH=arm64 go build
+      run: GOOS=darwin GOARCH=arm64 go build mac > ebayCalcMac
 
     - name: Build for Linux
-      run: GOOS=linux GOARCH=amd64 go build
+      run: GOOS=linux GOARCH=amd64 go build > ebayCalcLinux
       
     - name: Build for Windows
-      run: GOOS=windows GOARCH=amd64 go build
+      run: GOOS=windows GOARCH=amd64 go build > ebayCalcWin.exe
 
