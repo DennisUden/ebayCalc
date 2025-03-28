@@ -27,4 +27,12 @@ jobs:
       
     - name: Build for Windows
       run: GOOS=windows GOARCH=amd64 go build -o ebayCalcWin.exe
-
+      
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ebayCalc-binaries
+        path: |
+          ebayCalcMac
+          ebayCalcLinux
+          ebayCalcWin.exe
