@@ -148,12 +148,13 @@ func main() {
 	greeting()
 
 	inputs := inputs{}
+	var err error
 
 	// work in progress: wrapping each input-prompt in an error handler and a loop
+	ekString := ""
 	for {
-		var err error
 
-		ekString := newInput("Einkaufspreis")
+		ekString = newInput("Einkaufspreis")
 		inputs.ek, err = toFloat(ekString)
 
 		if err != nil {
@@ -176,10 +177,11 @@ func main() {
 		break
 	}
 
+	mengeString := ""
 	for {
 		var err error
 
-		mengeString := newInput("Menge")
+		mengeString = newInput("Menge")
 		inputs.menge, err = toFloat(mengeString)
 
 		if err != nil {
@@ -200,10 +202,12 @@ func main() {
 		break
 	}
 
+	vkEbayString := ""
+
 	for {
 		var err error
 
-		vkEbayString := newInput("Ebay Preis")
+		vkEbayString = newInput("Ebay Preis")
 		inputs.vkEbay, err = toFloat(vkEbayString)
 
 		if err != nil {
@@ -220,19 +224,35 @@ func main() {
 		vkEbayString = newInput("Ebay Preis")
 		if vkEbayString == "ek" {
 			ekString = newInput("Einkaufspreis")
-			inputs.ek = toFloat(ekString)
+			inputs.ek, err = toFloat(ekString)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 
 			mengeString = newInput("Menge")
-			inputs.menge = toFloat(mengeString)
+			inputs.menge, err = toFloat(mengeString)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 
 			vkEbayString = newInput("Ebay Preis")
-			inputs.vkEbay = toFloat(vkEbayString)
+			inputs.vkEbay, err = toFloat(vkEbayString)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 
 			writeOutput(inputs)
 
 			continue
 		}
-		inputs.vkEbay = toFloat(vkEbayString)
+		inputs.vkEbay, err = toFloat(vkEbayString)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
 
 		writeOutput(inputs)
 	}
