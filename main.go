@@ -215,26 +215,25 @@ func main() {
 	
 	writeOutput(inputs)
 
-//	for {
-//		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
-//		vkEbayString = newInput("Ebay Preis")
-//
-//		if vkEbayString == "ek" {
-//			ekString = newInput("Einkaufspreis")
-//			inputs.ek = toFloat(ekString)
-//
-//			mengeString = newInput("Menge")
-//			inputs.menge = toFloat(mengeString)
-//
-//			vkEbayString = newInput("Ebay Preis")
-//			inputs.vkEbay = toFloat(vkEbayString)
-//
-//			writeOutput(inputs)
-//
-//			continue
-//		}
-//		inputs.vkEbay = toFloat(vkEbayString)
-//
-//		writeOutput(inputs)
-//	}
+	for {
+		fmt.Println(color("Send ", "yellow")+"ek"+color(" to start with a new product", "yellow"))
+		vkEbayString = newInput("Ebay Preis")
+		if vkEbayString == "ek" {
+			ekString = newInput("Einkaufspreis")
+			inputs.ek = toFloat(ekString)
+
+			mengeString = newInput("Menge")
+			inputs.menge = toFloat(mengeString)
+
+			vkEbayString = newInput("Ebay Preis")
+			inputs.vkEbay = toFloat(vkEbayString)
+
+			writeOutput(inputs)
+
+			continue
+		}
+		inputs.vkEbay = toFloat(vkEbayString)
+
+		writeOutput(inputs)
+	}
 }
