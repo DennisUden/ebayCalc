@@ -27,21 +27,17 @@ jobs:
       
     - name: Build for Windows
       run: GOOS=windows GOARCH=amd64 go build -o ebayCalcWin.exe
-      
-    - name: Upload MacOS artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: ebayCalcMac
-        path: ebayCalcMac
 
-    - name: Upload Linux artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: ebayCalcLinux
-        path: ebayCalcLinux
-
-    - name: Upload Windows artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: ebayCalcWin
-        path: ebayCalcWin.exe
+    - name: Create Release and Upload Assets
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        TAG="v0.0.1-${{ github.sha }}"
+        gh release create "$TAG" --title "Release $TAG" --notes "Automated build" --draft || true
+        
+        gh release upload "$TAG" ebayCalcMac --clobber
+        gh release upload "$TAG" ebayCalcLinux --clobber
+        gh release upload "$TAG" ebayCalcWin.exe --clobber
+        
+        gh release edit "$TAG" --draft=false
