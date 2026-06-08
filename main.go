@@ -78,7 +78,7 @@ func toFloat(a string) (float64, error) {
 func writeOutput(inputs inputs) {
 
 	provisionBoote := inputs.vkEbay * 14/100 
-	provisionGarten := inputs.vkEbay) * 13/100
+	provisionGarten := inputs.vkEbay * 13/100
 
 	var provision float64
 
